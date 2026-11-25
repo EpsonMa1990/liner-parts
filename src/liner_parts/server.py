@@ -82,6 +82,11 @@ def create_app(service, token):
     def asset(name):
         return send_from_directory(assets / "assets", name)
 
+    @app.get("/logo.png")
+    @app.get("/logo.ico")
+    def brand_image():
+        return send_from_directory(assets, request.path.lstrip("/"))
+
     @app.get("/api/tasks")
     def tasks():
         return jsonify(service.tasks())

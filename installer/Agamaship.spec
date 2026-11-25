@@ -27,5 +27,5 @@ analysis.binaries = [entry for entry in analysis.binaries if entry[0].lower() !=
 archive = PYZ(analysis.pure)
 app = EXE(
     archive, analysis.scripts, analysis.binaries, analysis.datas, [],
-    name='Agamaship-Desktop', console=False,
+    name='Agamaship-Desktop', console=False, icon=str(root / 'frontend/public/logo.ico'),
 )

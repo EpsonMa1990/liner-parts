@@ -122,7 +122,12 @@ def main():
             )
             bridge._window = window
             window.events.closing += bridge._on_closing
-            webview.start(gui="edgechromium" if sys.platform == "win32" else None, debug=False)
+            icon = Path(__file__).parent / "web_dist" / ("logo.ico" if sys.platform == "win32" else "logo.png")
+            webview.start(
+                gui="edgechromium" if sys.platform == "win32" else None,
+                icon=str(icon),
+                debug=False,
+            )
     except KeyboardInterrupt:
         pass
     finally:

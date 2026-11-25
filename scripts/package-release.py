@@ -37,7 +37,7 @@ files = [
     "frontend/index.html",
 ]
 with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
-    for folder in roots + ["frontend/src", "frontend/tests"]:
+    for folder in roots + ["frontend/src", "frontend/public", "frontend/tests"]:
         for path in sorted((root / folder).rglob("*")):
             if (
                 path.is_file()

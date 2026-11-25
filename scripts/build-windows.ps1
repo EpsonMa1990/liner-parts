@@ -11,7 +11,7 @@ try {
 } finally { Pop-Location }
 Push-Location $projectRoot
 try {
-    & $python -m PyInstaller --noconfirm --windowed --name LinerParts --paths src --collect-data liner_parts --collect-all webview --collect-all pypdfium2 --collect-all pypdfium2_raw --hidden-import keyring.backends.Windows run_desktop.py
+    & $python -m PyInstaller --noconfirm --windowed --name LinerParts --icon frontend/public/logo.ico --paths src --collect-data liner_parts --collect-all webview --collect-all pypdfium2 --collect-all pypdfium2_raw --hidden-import keyring.backends.Windows run_desktop.py
     if ($LASTEXITCODE -ne 0) { throw 'PyInstaller build failed' }
     # Windows 10/11 always use the OS Universal CRT. Do not redistribute the build
     # machine's system DLL, which can also be locked during installer extraction.

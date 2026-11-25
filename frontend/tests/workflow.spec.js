@@ -6,6 +6,8 @@ test('import, draw, recognize, review, resume, export and restore', async ({ pag
   page.on('pageerror', e => errors.push(e.message))
   await page.goto('/session?token=e2e-local-token')
   await expect(page.getByRole('heading', { name: 'Agamaship取件表制作工作台' })).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Agamaship 官网 Logo' })).toBeVisible()
+  await expect.poll(() => page.locator('.brand-logo').evaluate(img => img.naturalWidth)).toBeGreaterThan(0)
   await page.screenshot({ path: '../artifacts/library-empty.png', fullPage: true })
   await page.getByRole('button', { name: '接口设置', exact: true }).click()
   await page.getByLabel('Base URL', { exact: false }).fill('http://127.0.0.1:9999/v1')
