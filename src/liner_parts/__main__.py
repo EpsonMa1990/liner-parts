@@ -72,7 +72,7 @@ class DesktopBridge:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Liner Parts · 开源取件表制作工具")
+    parser = argparse.ArgumentParser(description="Agamaship取件表制作工作台")
     parser.add_argument("--data-dir", type=Path, help="本地项目和设置保存目录")
     parser.add_argument("--browser", action="store_true", help="使用本机浏览器打开（开发或桌面组件不可用时）")
     parser.add_argument(
@@ -100,7 +100,7 @@ def main():
     url = f"http://127.0.0.1:{server.effective_port}/session?token={token}"
     try:
         if args.browser:
-            print(f"Liner Parts: {url}", flush=True)
+            print(f"Agamaship: {url}", flush=True)
             print(f"Data: {service.store.root}", flush=True)
             if not args.no_open:
                 webbrowser.open(url)
@@ -112,13 +112,13 @@ def main():
             thread.start()
             bridge = DesktopBridge(service)
             window = webview.create_window(
-                "Liner Parts · 取件表制作",
+                "Agamaship取件表制作工作台",
                 url,
                 js_api=bridge,
                 width=1480,
                 height=940,
                 min_size=(1000, 680),
-                background_color="#EDF1F4",
+                background_color="#F5F7FB",
             )
             bridge._window = window
             window.events.closing += bridge._on_closing

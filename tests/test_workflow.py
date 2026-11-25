@@ -198,11 +198,60 @@ def test_export_preserves_number_and_escapes_formulas(service, task):
     row = next(r for r in summary["items"] if r["runner"] == "A1")
     assert row["quantity"] == 5 and row["pages"] == [1, 2]
     wb = load_workbook(io.BytesIO(service.export_excel(task["id"])), data_only=False)
-    assert wb.sheetnames == ["取件汇总", "识别明细"]
+    assert wb.sheetnames == ["取件汇总", "按板件汇总", "识别明细"]
     all_cells = [c for sheet in wb for row in sheet for c in row]
     assert any(c.value == "03" and c.data_type == "s" for c in all_cells)
     assert any(c.value == "=2+2" and c.data_type == "s" for c in all_cells)
     assert not any(c.data_type == "f" for c in all_cells)
+
+
+def test_grouped_summary_counts_across_pages_categories_and_runners(service, task):
+    p1, p2 = task["pages"]
+    service.save_page(
+        p1["id"],
+        [
+            box("a", category="头", runner="A1", part_number="03", quantity=2, status="manual"),
+            box("b", category="头", runner="A1", part_number="12", quantity=1, status="manual"),
+            box("c", category="头", runner="A2", part_number="03", quantity=4, status="manual"),
+            box("pending", category="头", runner="A1", part_number="03", quantity=99),
+        ],
+        0,
+    )
+    service.save_page(
+        p2["id"],
+        [
+            box("d", category="头", runner="A1", part_number="03", quantity=3, status="recognized"),
+            box("e", category="左臂", runner="A1", part_number="03", quantity=2, status="manual"),
+            box("f", category="左臂", runner="A1", part_number="2", quantity=1, status="manual"),
+        ],
+        0,
+    )
+    summary = service.summary(task["id"])
+    assert summary["total_quantity"] == 13 and summary["part_kinds"] == 4
+    assert summary["unresolved"] == 1
+    assert len(summary["by_category"]) == 3 and len(summary["by_runner"]) == 2
+    head = next(r for r in summary["by_category"] if r["category"] == "头" and r["runner"] == "A1")
+    assert head["parts"] == [
+        {"part_number": "03", "quantity": 5},
+        {"part_number": "12", "quantity": 1},
+    ]
+    assert head["quantity"] == 6 and head["pages"] == [1, 2]
+    runner = next(r for r in summary["by_runner"] if r["runner"] == "A1")
+    assert runner["parts"] == [
+        {"part_number": "2", "quantity": 1},
+        {"part_number": "03", "quantity": 7},
+        {"part_number": "12", "quantity": 1},
+    ]
+    assert runner["quantity"] == 9 and set(runner["categories"]) == {"头", "左臂"}
+    wb = load_workbook(io.BytesIO(service.export_excel(task["id"])), data_only=False)
+    category_row = next(
+        r for r in wb["取件汇总"].iter_rows(min_row=5, values_only=True) if r[:2] == ("头", "A1")
+    )
+    runner_row = next(
+        r for r in wb["按板件汇总"].iter_rows(min_row=5, values_only=True) if r[0] == "A1"
+    )
+    assert category_row == ("头", "A1", "03 × 5、12 × 1", 6, "1, 2")
+    assert runner_row[:3] == ("A1", "2 × 1、03 × 7、12 × 1", 9)
 
 
 def test_project_roundtrip_and_no_credentials(service, task):

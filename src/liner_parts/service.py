@@ -378,8 +378,48 @@ class Service:
             return [(0, int(p)) if p.isdigit() else (1, p.casefold()) for p in re.split(r"(\d+)", value)]
 
         result.sort(key=lambda r: (natural(r["category"]), natural(r["runner"]), natural(r["part_number"])))
+
+        def grouped(by_category):
+            collected = {}
+            for item in result:
+                key = (item["category"], item["runner"]) if by_category else (item["runner"],)
+                group = collected.setdefault(
+                    key,
+                    {
+                        "category": item["category"] if by_category else "",
+                        "runner": item["runner"],
+                        "parts": {},
+                        "quantity": 0,
+                        "pages": set(),
+                        "categories": set(),
+                    },
+                )
+                number = item["part_number"]
+                group["parts"][number] = group["parts"].get(number, 0) + item["quantity"]
+                group["quantity"] += item["quantity"]
+                group["pages"].update(item["pages"])
+                group["categories"].add(item["category"])
+            return [
+                {
+                    **group,
+                    "parts": [
+                        {"part_number": number, "quantity": quantity}
+                        for number, quantity in sorted(group["parts"].items(), key=lambda p: natural(p[0]))
+                    ],
+                    "pages": sorted(group["pages"]),
+                    "categories": sorted(group["categories"], key=natural),
+                }
+                for key, group in sorted(
+                    collected.items(), key=lambda pair: tuple(natural(value) for value in pair[0])
+                )
+            ]
+
         return {
             "items": result,
+            "by_category": grouped(True),
+            "by_runner": grouped(False),
+            "total_quantity": sum(item["quantity"] for item in result),
+            "part_kinds": len({(item["runner"], item["part_number"]) for item in result}),
             "rows": rows,
             "unresolved": sum(r["status"] not in ("manual", "recognized") for r in rows),
         }
@@ -392,14 +432,33 @@ class Service:
         ws.append([task["title"]])
         ws.append([f"未计入汇总的待处理标记：{summary['unresolved']}；请对照说明书校对数量。"])
         ws.append([])
-        ws.append(["分类", "板件", "零件号", "数量", "来源页码"])
-        for item in summary["items"]:
+        ws.append(["部件分类", "板件", "零件号 × 数量", "合计数量", "来源页码"])
+
+        def part_text(item):
+            return "、".join(f"{p['part_number']} × {p['quantity']}" for p in item["parts"])
+
+        for item in summary["by_category"]:
             ws.append(
                 [
                     item["category"],
                     item["runner"],
-                    item["part_number"],
+                    part_text(item),
                     item["quantity"],
+                    ", ".join(map(str, item["pages"])),
+                ]
+            )
+        runners = wb.create_sheet("按板件汇总")
+        runners.append([task["title"]])
+        runners.append(["跨部件分类合并同一板件的零件；相同编号的数量累加。"])
+        runners.append([])
+        runners.append(["板件", "零件号 × 数量", "合计数量", "涉及部件分类", "来源页码"])
+        for item in summary["by_runner"]:
+            runners.append(
+                [
+                    item["runner"],
+                    part_text(item),
+                    item["quantity"],
+                    "、".join(item["categories"]),
                     ", ".join(map(str, item["pages"])),
                 ]
             )
@@ -425,7 +484,11 @@ class Service:
                     row["note"],
                 ]
             )
-        for sheet, header in [(ws, 4), (detail, 1)]:
+        for sheet, header, widths in [
+            (ws, 4, [20, 18, 60, 14, 20]),
+            (runners, 4, [18, 60, 14, 28, 20]),
+            (detail, 1, [12, 20, 18, 18, 14, 18, 28, 45]),
+        ]:
             for row in sheet:
                 for cell in row:
                     if isinstance(cell.value, str):
@@ -435,7 +498,7 @@ class Service:
             for cell in sheet[header]:
                 cell.fill = PatternFill("solid", fgColor="285E52")
                 cell.font = Font(color="FFFFFF", bold=True)
-            for index, width in enumerate([20, 18, 18, 14, 26, 18, 28, 45][: sheet.max_column], 1):
+            for index, width in enumerate(widths, 1):
                 sheet.column_dimensions[sheet.cell(header, index).column_letter].width = width
             sheet.freeze_panes = f"A{header + 1}"
             sheet.auto_filter.ref = (

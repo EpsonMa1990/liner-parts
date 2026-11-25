@@ -1,14 +1,16 @@
-# Liner Parts · 开源取件表制作工具
+# Agamaship取件表制作工作台
 
 [下载 Windows 桌面版（EXE）](https://github.com/EpsonMa1990/liner-parts/releases/latest/download/LinerParts-Setup.exe) · [全部版本与便携 ZIP](https://github.com/EpsonMa1990/liner-parts/releases) · [网页版](https://agamaship.com) · [反馈问题](https://github.com/EpsonMa1990/liner-parts/issues)
 
 面向高达与拼装模型玩家的本地桌面工具。导入 PDF 或说明书图片，框选零件标号，使用自己的 OpenAI 兼容视觉模型识别，对照截图校对后导出 Excel。任务、说明书和标注保存在本机，本地制作无需网站账号。可选的广场分享功能需要登录线上平台。
 
+![Agamaship取件表制作工作台首页](docs/images/home.png)
+
 ![取件表标注、区域截图与结果校对](docs/images/workbench.png)
 
 ## 项目与官网
 
-Liner Parts 是[胶佬 AI 应用平台](https://agamaship.com)的开源桌面取件工具。桌面版侧栏的「项目介绍与官网」提供功能介绍、源码地址和合作入口。
+Agamaship取件表制作工作台是[胶佬 AI 应用平台](https://agamaship.com)的开源桌面取件工具。桌面版侧栏的「项目介绍与官网」提供功能介绍、源码地址和合作入口。
 
 官网为模型玩家提供取件表制作、AI 上色、极致分色、AI 生图、灵感画板、品牌漆色卡与相近色查询，以及作品和取件表分享广场。[公开功能教程](https://agamaship.com/features/index.html)无需登录；在线工作区需登录，AI 生成按官网当前规则计费。
 
@@ -18,13 +20,15 @@ GitHub 项目地址：<https://github.com/EpsonMa1990/liner-parts>。欢迎提�
 
 ## 普通用户安装
 
-下载上方 `LinerParts-Setup.exe`，运行安装后从开始菜单打开 **Liner Parts**。支持 Windows 10/11 x64，无需安装 Python 或 Node.js；需要 Microsoft Edge WebView2 Runtime，缺少时可从 [Microsoft 官方下载页](https://developer.microsoft.com/microsoft-edge/webview2/)安装。
+下载上方 `LinerParts-Setup.exe`，运行安装后从开始菜单打开 **Agamaship取件表制作工作台**。支持 Windows 10/11 x64，无需安装 Python 或 Node.js；需要 Microsoft Edge WebView2 Runtime，缺少时可从 [Microsoft 官方下载页](https://developer.microsoft.com/microsoft-edge/webview2/)安装。
 
 Release 同时提供便携 ZIP：解压整个目录后运行 `LinerParts.exe`，不要只复制其中的 exe。卸载程序不会删除本机项目数据。软件免费开源；识别时使用你自己的模型 API，费用由服务商收取。
 
 当前安装包未做代码签名，可用同一 Release 的 `SHA256SUMS.txt` 校验下载文件。
 
 ## 功能
+
+- 汇总表与网页版一致：相同部件分类、相同板件合并为一行，每个零件号显示「× 数量」，另有合计数量与来源页码。可切换按板件汇总，跨分类累加同一编号的数量。Excel 包含「取件汇总」「按板件汇总」「识别明细」三个工作表。
 
 - 本地任务列表、改名、删除、PDF / 图片分页预览与原创练习说明书。
 - 直接选择一张或多张 PNG、JPG、JPEG、WebP、BMP 图片创建任务，也可向已有 PDF / 图片任务追加图片页。无需先转成 PDF；图片自动校正拍摄方向，透明区域使用白底，按 PNG 保存。

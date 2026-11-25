@@ -24,7 +24,7 @@ class InstanceLock:
                 fcntl.flock(self.file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
         except OSError:
             self.file.close()
-            raise RuntimeError("此数据目录已在另一窗口中打开，请返回已打开的 Liner Parts。") from None
+            raise RuntimeError("此数据目录已在另一窗口中打开，请返回已打开的 Agamaship取件表制作工作台。") from None
 
     def close(self):
         if self.file.closed:

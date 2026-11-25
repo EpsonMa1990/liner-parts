@@ -1,18 +1,18 @@
 #ifndef AppVersion
-  #define AppVersion "0.1.4"
+  #define AppVersion "0.1.5"
 #endif
-#define AppName "Liner Parts"
+#define AppName "Agamaship取件表制作工作台"
 
 [Setup]
 AppId={{C0301CA0-2B7F-4367-AE35-7927C8D8CB64}
 AppName={#AppName}
 AppVersion={#AppVersion}
-AppPublisher=Liner Parts contributors
+AppPublisher=Agamaship contributors
 AppPublisherURL=https://github.com/EpsonMa1990/liner-parts
 AppSupportURL=https://github.com/EpsonMa1990/liner-parts/issues
 AppUpdatesURL=https://github.com/EpsonMa1990/liner-parts/releases
 DefaultDirName={localappdata}\Programs\LinerParts
-DefaultGroupName=Liner Parts
+DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
@@ -38,10 +38,10 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; Flags: unchecked
 Source: "..\dist\LinerParts\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\Liner Parts"; Filename: "{app}\LinerParts.exe"
-Name: "{autodesktop}\Liner Parts"; Filename: "{app}\LinerParts.exe"; Tasks: desktopicon
+Name: "{group}\{#AppName}"; Filename: "{app}\LinerParts.exe"
+Name: "{autodesktop}\{#AppName}"; Filename: "{app}\LinerParts.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\LinerParts.exe"; Description: "Open Liner Parts"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\LinerParts.exe"; Description: "Open {#AppName}"; Flags: nowait postinstall skipifsilent
 
 ; User projects live outside {app}; uninstall must never delete the data directory.
