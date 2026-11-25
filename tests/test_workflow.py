@@ -250,8 +250,8 @@ def test_grouped_summary_counts_across_pages_categories_and_runners(service, tas
     runner_row = next(
         r for r in wb["按板件汇总"].iter_rows(min_row=5, values_only=True) if r[0] == "A1"
     )
-    assert category_row == ("头", "A1", "03 × 5、12 × 1", 6, "1, 2")
-    assert runner_row[:3] == ("A1", "2 × 1、03 × 7、12 × 1", 9)
+    assert category_row == ("头", "A1", "03 × 5、12", 6, "1, 2")
+    assert runner_row[:3] == ("A1", "2、03 × 7、12", 9)
 
 
 def test_project_roundtrip_and_no_credentials(service, task):

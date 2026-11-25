@@ -435,7 +435,10 @@ class Service:
         ws.append(["部件分类", "板件", "零件号 × 数量", "合计数量", "来源页码"])
 
         def part_text(item):
-            return "、".join(f"{p['part_number']} × {p['quantity']}" for p in item["parts"])
+            return "、".join(
+                f"{p['part_number']} × {p['quantity']}" if p["quantity"] > 1 else p["part_number"]
+                for p in item["parts"]
+            )
 
         for item in summary["by_category"]:
             ws.append(

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "liner-parts"
-version = "0.1.6"
+version = "0.1.7"
 description = "Local-first desktop parts-list maker for scale-model instruction manuals"
 readme = "README.md"
 requires-python = ">=3.11"

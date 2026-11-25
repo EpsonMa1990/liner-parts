@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { Check, Eye, EyeOff, LoaderCircle, RotateCcw, Unplug } from 'lucide-vue-next'
+import { ArrowUpRight, Check, Eye, EyeOff, LoaderCircle, RotateCcw, ShieldCheck, Unplug } from 'lucide-vue-next'
 import Dialog from './Dialog.vue'
 import { api } from './api'
 const emit = defineEmits(['close', 'saved'])
@@ -32,7 +32,8 @@ async function clearKey() {
 
 <template>
   <Dialog title="接口设置" wide @close="!busy && emit('close')">
-    <p class="dialog-intro">使用你自己的视觉模型服务。说明书在本地保存，识别时只发送选中的截图。</p>
+    <div class="settings-privacy"><ShieldCheck :size="20" aria-hidden="true" /><div><strong>您的大模型配置仅保存在本机电脑</strong><p>不会上传至 Agamaship 平台。识别时，选中的截图、提示词及必要的认证信息会发送至您配置的模型服务商。</p></div></div>
+    <section class="settings-guide" aria-labelledby="model-guide-title"><div><h3 id="model-guide-title">建议使用火山引擎豆包模型</h3><p>在火山方舟开通支持图片理解的豆包模型，获取 API Key、接口地址和模型 ID 后，填写下方设置。</p></div><a class="secondary" href="https://www.volcengine.com/product/doubao" target="_blank" rel="noopener noreferrer">前往火山引擎<ArrowUpRight :size="16" aria-hidden="true" /></a></section>
     <form v-if="form" @submit.prevent="action('save')">
       <fieldset :disabled="!!busy">
         <label class="field">Base URL<input v-model="form.base_url" placeholder="https://example.com/v1" type="url" required spellcheck="false" @input="key = ''; form.has_key = false"><small>填写 OpenAI 兼容接口地址，可包含 /v1。切换地址后请重新填写对应密钥。</small></label>
@@ -56,3 +57,7 @@ async function clearKey() {
     <p v-else class="notice" role="status">{{ error || '正在读取设置…' }}</p>
   </Dialog>
 </template>
+
+<style scoped>
+.settings-privacy{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;color:var(--accent)}.settings-privacy>svg{flex-shrink:0;margin-top:2px}.settings-privacy strong{font-size:13px}.settings-privacy p,.settings-guide p{font-size:12px;line-height:1.75;color:var(--muted);margin:5px 0 0}.settings-guide{display:flex;align-items:center;gap:18px;padding:16px;background:var(--accent-soft);border:1px solid var(--border);border-radius:8px;margin:0 0 22px}.settings-guide h3{font-size:14px;margin:0;color:var(--ink)}.settings-guide>div{min-width:0;flex:1}.settings-guide>a{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;min-height:44px;text-decoration:none;color:var(--accent);white-space:nowrap}.settings-guide>a:focus-visible{outline:3px solid #7da5df;outline-offset:3px}@media(max-width:600px){.settings-guide{align-items:flex-start;flex-direction:column;gap:12px}}
+</style>
