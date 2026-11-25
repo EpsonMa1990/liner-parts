@@ -48,7 +48,7 @@ test('import, draw, recognize, review, resume, export and restore', async ({ pag
   await expect(page.getByRole('heading', { name: 'Agamaship取件表制作工作台', exact: true })).toBeVisible()
   await page.getByRole('button', { name: /PDF \/ 2 PAGES/ }).click()
   await page.getByRole('button', { name: /取件汇总/ }).click()
-  await expect(page.locator('.summary-part').filter({ hasText: /^03 × 1$/ })).toBeVisible()
+  await expect(page.locator('.summary-part').filter({ hasText: /^03$/ })).toBeVisible()
   await expect(page.getByRole('cell', { name: '头', exact: true })).toBeVisible()
   const downloaded = page.waitForEvent('download')
   await page.getByRole('button', { name: '导出 Excel', exact: true }).click()
@@ -64,7 +64,7 @@ test('import, draw, recognize, review, resume, export and restore', async ({ pag
   await page.getByLabel('选择说明书或项目文件').setInputFiles(path.resolve('../artifacts/e2e-backup.liner'))
   await expect(page.getByRole('heading', { name: 'e2e-manual', exact: true })).toBeVisible()
   await page.getByRole('button', { name: /取件汇总/ }).click()
-  await expect(page.locator('.summary-part').filter({ hasText: /^03 × 1$/ })).toBeVisible()
+  await expect(page.locator('.summary-part').filter({ hasText: /^03$/ })).toBeVisible()
   expect(errors).toEqual([])
 })
 
