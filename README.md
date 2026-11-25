@@ -117,6 +117,8 @@ npm test
 
 在项目根目录运行 `powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1`。产物位于 `dist/LinerParts`，普通用户运行其中 `LinerParts.exe`，无需安装 Python 或 Node.js。首次发布建议在干净的 Windows 机器上验证 WebView2、中文路径、导入与导出。
 
+构建面向 Windows 10/11，使用系统自带的 Universal CRT；打包时排除构建机器上的 `ucrtbase.dll`，不另行安装或替换系统运行库。
+
 安装 [Inno Setup 6](https://jrsoftware.org/isinfo.php) 后运行 `powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1`，生成 `dist/LinerParts-Setup.exe`。最后运行 `python scripts/package-release.py`，生成便携版、源码包及 `SHA256SUMS.txt`。安装包只写入应用目录，不包含平台后端、部署配置或用户文件。
 
 请保留整个 `LinerParts` 文件夹，不要只复制 exe。可运行 `LinerParts.exe --self-check report.json` 做离线桌面自检；报告包括 WebView2、Python 桥接、关闭前保存、图片页导入与追加、图片项目恢复、截图预览、双线程识别及完整模型分享。自检使用临时目录、原创示例和模拟平台，不读取用户项目、不调用外部模型或实际发布作品。
