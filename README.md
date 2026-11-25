@@ -6,6 +6,16 @@
 
 ![取件表标注、区域截图与结果校对](docs/images/workbench.png)
 
+## 项目与官网
+
+Liner Parts 是[胶佬 AI 应用平台](https://agamaship.com)的开源桌面取件工具。桌面版侧栏的「项目介绍与官网」提供功能介绍、源码地址和合作入口。
+
+官网为模型玩家提供取件表制作、AI 上色、极致分色、AI 生图、灵感画板、品牌漆色卡与相近色查询，以及作品和取件表分享广场。[公开功能教程](https://agamaship.com/features/index.html)无需登录；在线工作区需登录，AI 生成按官网当前规则计费。
+
+有定制工具、私有部署、功能集成、团队使用等商用需求，或模型品牌、工具厂家及机构的展示推广合作需求，欢迎[通过官网联系站长](https://agamaship.com/features/index.html#contact)洽谈。源码采用 MIT 协议，第三方组件遵循各自许可证，详见项目许可证文件。
+
+GitHub 项目地址：<https://github.com/EpsonMa1990/liner-parts>。欢迎提交问题、建议和代码贡献。
+
 ## 普通用户安装
 
 下载上方 `LinerParts-Setup.exe`，运行安装后从开始菜单打开 **Liner Parts**。支持 Windows 10/11 x64，无需安装 Python 或 Node.js；需要 Microsoft Edge WebView2 Runtime，缺少时可从 [Microsoft 官方下载页](https://developer.microsoft.com/microsoft-edge/webview2/)安装。
