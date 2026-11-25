@@ -24,5 +24,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'License collection failed' }
     Copy-Item -LiteralPath README.md,LICENSE,THIRD_PARTY_NOTICES.md -Destination dist/LinerParts
     Copy-Item -LiteralPath docs -Destination dist/LinerParts/docs -Recurse -Force
-    Write-Output 'Build complete: dist/LinerParts/LinerParts.exe'
+    & $python -m PyInstaller --noconfirm installer/Agamaship.spec
+    if ($LASTEXITCODE -ne 0) { throw 'Single-file application build failed' }
+    Write-Output 'Build complete: dist/Agamaship-Desktop.exe and dist/LinerParts/LinerParts.exe'
 } finally { Pop-Location }

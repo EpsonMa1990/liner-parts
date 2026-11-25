@@ -50,8 +50,8 @@ with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
         archive.write(root / name, Path("liner-desktop") / name)
 
 lines = []
-installer = dist / "LinerParts-Setup.exe"
-for path in [portable, source] + ([installer] if installer.exists() else []):
+standalone = dist / "Agamaship-Desktop.exe"
+for path in [portable, source] + ([standalone] if standalone.exists() else []):
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     lines.append(f"{digest}  {path.name}")
     print(f"{path.name}: {path.stat().st_size / 1024 / 1024:.2f} MB")

@@ -1,6 +1,6 @@
 # Agamaship取件表制作工作台
 
-[下载 Windows 桌面版（EXE）](https://github.com/EpsonMa1990/liner-parts/releases/latest/download/LinerParts-Setup.exe) · [全部版本与便携 ZIP](https://github.com/EpsonMa1990/liner-parts/releases) · [网页版](https://agamaship.com) · [反馈问题](https://github.com/EpsonMa1990/liner-parts/issues)
+[下载 Windows 桌面版（EXE）](https://github.com/EpsonMa1990/liner-parts/releases/latest/download/Agamaship-Desktop.exe) · [全部版本与便携 ZIP](https://github.com/EpsonMa1990/liner-parts/releases) · [网页版](https://agamaship.com) · [反馈问题](https://github.com/EpsonMa1990/liner-parts/issues)
 
 面向高达与拼装模型玩家的本地桌面工具。导入 PDF 或说明书图片，框选零件标号，使用自己的 OpenAI 兼容视觉模型识别，对照截图校对后导出 Excel。任务、说明书和标注保存在本机，本地制作无需网站账号。可选的广场分享功能需要登录线上平台。
 
@@ -18,13 +18,13 @@ Agamaship取件表制作工作台是[胶佬 AI 应用平台](https://agamaship.c
 
 GitHub 项目地址：<https://github.com/EpsonMa1990/liner-parts>。欢迎提交问题、建议和代码贡献。
 
-## 普通用户安装
+## 普通用户使用
 
-下载上方 `LinerParts-Setup.exe`，运行安装后从开始菜单打开 **Agamaship取件表制作工作台**。支持 Windows 10/11 x64，无需安装 Python 或 Node.js；需要 Microsoft Edge WebView2 Runtime，缺少时可从 [Microsoft 官方下载页](https://developer.microsoft.com/microsoft-edge/webview2/)安装。
+下载上方 `Agamaship-Desktop.exe`，双击即可打开 **Agamaship取件表制作工作台**，无需安装程序或管理员权限。首次启动需要解包内置组件，请稍候。支持 Windows 10/11 x64，无需安装 Python 或 Node.js；需要 Microsoft Edge WebView2 Runtime，缺少时可从 [Microsoft 官方下载页](https://developer.microsoft.com/microsoft-edge/webview2/)安装。
 
-Release 同时提供便携 ZIP：解压整个目录后运行 `LinerParts.exe`，不要只复制其中的 exe。卸载程序不会删除本机项目数据。软件免费开源；识别时使用你自己的模型 API，费用由服务商收取。
+Release 同时提供便携 ZIP：解压整个目录后运行 `LinerParts.exe`，不要只复制其中的 exe。本机项目保存在独立的数据目录，删除 EXE 不会删除项目。软件免费开源；识别时使用你自己的模型 API，费用由服务商收取。
 
-当前安装包未做代码签名，可用同一 Release 的 `SHA256SUMS.txt` 校验下载文件。
+当前 EXE 未做代码签名，可用同一 Release 的 `SHA256SUMS.txt` 校验下载文件。
 
 ## 功能
 
@@ -115,11 +115,11 @@ npm test
 
 ## Windows 打包
 
-在项目根目录运行 `powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1`。产物位于 `dist/LinerParts`，普通用户运行其中 `LinerParts.exe`，无需安装 Python 或 Node.js。首次发布建议在干净的 Windows 机器上验证 WebView2、中文路径、导入与导出。
+在项目根目录运行 `powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1`，生成单文件应用 `dist/Agamaship-Desktop.exe` 以及目录式便携版 `dist/LinerParts`。普通用户无需安装 Python 或 Node.js。首次发布建议在干净的 Windows 机器上验证 WebView2、中文路径、导入与导出。
 
 构建面向 Windows 10/11，使用系统自带的 Universal CRT；打包时排除构建机器上的 `ucrtbase.dll`，不另行安装或替换系统运行库。
 
-安装 [Inno Setup 6](https://jrsoftware.org/isinfo.php) 后运行 `powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1`，生成 `dist/LinerParts-Setup.exe`。最后运行 `python scripts/package-release.py`，生成便携版、源码包及 `SHA256SUMS.txt`。安装包只写入应用目录，不包含平台后端、部署配置或用户文件。
+运行 `python scripts/package-release.py`，生成便携 ZIP、源码包及 `SHA256SUMS.txt`。发布文件不包含平台后端、部署配置或用户文件。仓库另保留 Inno Setup 脚本供自行制作安装器；v0.1.5 官方发布使用单文件 EXE 与便携 ZIP。
 
 请保留整个 `LinerParts` 文件夹，不要只复制 exe。可运行 `LinerParts.exe --self-check report.json` 做离线桌面自检；报告包括 WebView2、Python 桥接、关闭前保存、图片页导入与追加、图片项目恢复、截图预览、双线程识别及完整模型分享。自检使用临时目录、原创示例和模拟平台，不读取用户项目、不调用外部模型或实际发布作品。
 
